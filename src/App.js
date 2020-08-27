@@ -1,6 +1,12 @@
 import React, { Component } from 'react'
 
+let omdbApiUrl = `http://www.omdbapi.com/?i=tt3896198&apikey=93d3b263`
+
 export default class App extends Component {
+
+  api_Key = process.env.REACT_APP_API
+
+
   render() {
     return (
       <div>
