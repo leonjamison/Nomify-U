@@ -2,8 +2,10 @@ import React from 'react'
 
 const SearchForm = (props) => {
 
-    return(
+    let {handleChange, fetchMovies} = props
 
+    return(
+        
        <div className='container' style={{paddingTop: '100px'}}>
            <div className='row'>
                 <section className='col s9 offset-s2'>
@@ -12,10 +14,10 @@ const SearchForm = (props) => {
                             <input type='search'
                             name='searchTerms'
                             placeholder='Enter name of movie here...' 
-                            onChange={props.handleChange} 
+                            onChange={handleChange} 
                             />
                         </div>
-                        <button className="btn waves-effect floating blue-grey darken-3" type="submit" name="action" onClick={props.handleSubmit}>Search
+                        <button className="btn waves-effect floating blue-grey darken-3" type="submit" name="action" onClick={fetchMovies}>Search
                          <i className="material-icons right"></i>
                         </button>
                         

@@ -3,33 +3,71 @@ import Nav from '../Nav'
 import { Global, css} from '@emotion/core'
 import searchpage from '../../img/searchpage.jpg'
 import Searchform from './Searchform'
+import Movielist from './Movielist'
+import Moviedetails from './Moviedetails'
 
 
 const api_Key = process.env.REACT_APP_API 
-// let apiUrl = `http://www.omdbapi.com/?i=tt3896198&apikey=${api_Key}`
+const apiUrl = `http://www.omdbapi.com/?apikey=${api_Key}`
+
 
 
 class Searchpage extends React.Component {
     state={
         movies: [],
         currentMovie: null,
-        nominations: []
+        nominations: [],
+        searchTerms: ''
+       
         
     }
 
+    //If movie return no results, fix it so it handles error
+    fetchMovies=(e)=>{
+        e.preventDefault()
+        fetch(`${apiUrl}&s=${this.state.searchTerms}&type=movie`)
+        .then(resp => resp.json())
+        .then(movies => this.setState({movies: [...movies.Search]}))
+        
+    }
 
+    handleSearchChange=(e)=>{
+        this.setState({[e.target.name]: e.target.value})
+        //work on filter that returns results as user search terms changes
+        // this.fetchMovies(e)
+
+    }
+    
+    //TEST viewMovieDetails Function
+    viewMovieDetails=(movieId)=>{
+        fetch(`${apiUrl}&i=${movieId}`)
+        .then(resp => resp.json())
+        .then(details => this.setState({currentMovie: details}))
+        const filteredMovie = this.state.movies.filter(movie => movie.imdbID === movieId)
+        const newCurrentMovie = filteredMovie.length > 0 ? filteredMovie[0] : null
+        this.setState({currentMovie: newCurrentMovie }) 
+    }
+
+    nominateMovie=()=>{
+
+    }
 
 
     
     render(){
-
+     //  console.log(this.state.movies)
        return( 
+
             <div> 
                 <Global styles={GlobalCSS} />
                 <Nav/>
-                <Searchform/>
-                
+
+                {this.state.currentMovie === null ?  <div><Searchform handleChange={this.handleSearchChange} fetchMovies={this.fetchMovies}/> <Movielist movieDetails={this.viewMovieDetails} movies={this.state.movies} /> </div> :
+                 <Moviedetails nominateMovie={this.nominationMovie} details={this.state.movieDetails} currentMovie={this.state.currentMovie} closeMovieInfo={this.closeMovieInfo}/> 
+                }  
+
             </div>
+
        )
     }
 }
