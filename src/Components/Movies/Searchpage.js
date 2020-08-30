@@ -5,6 +5,8 @@ import searchpage from '../../img/searchpage.jpg'
 import Searchform from './Searchform'
 import Movielist from './Movielist'
 import Moviedetails from './Moviedetails'
+import debounce from 'lodash/debounce'
+// import throttle from "lodash/throttle"
 
 
 const api_Key = process.env.REACT_APP_API 
@@ -17,24 +19,36 @@ class Searchpage extends React.Component {
         movies: [],
         currentMovie: null,
         nominations: [],
-        searchTerms: ''
+        searchTerms: '',
+        message: ''
        
         
     }
 
-    //If movie return no results, fix it so it handles error
-    fetchMovies=(e)=>{
-        e.preventDefault()
-        fetch(`${apiUrl}&s=${this.state.searchTerms}&type=movie`)
+    // Fetch movies from api upon user search query
+    fetchMovies=(searchTerms)=>{
+
+        fetch(`${apiUrl}&s=${searchTerms}&type=movie`)
         .then(resp => resp.json())
-        .then(movies => this.setState({movies: [...movies.Search]}))
-        
+        .then(movies => this.setState({movies: [...movies.Search], message: ''}))
+        .catch((error)=>{
+            if ((error)){
+                this.setState({message: error})
+            }})
+        // console.log('error:',this.state.message)
     }
 
     handleSearchChange=(e)=>{
-        this.setState({[e.target.name]: e.target.value})
-        //work on filter that returns results as user search terms changes
-        // this.fetchMovies(e)
+        e.persist()
+        // let searchTerms = e.target.value
+        // this.setState({searchTerms, loading: true })
+        if(!this.debounce){
+            this.debounce = debounce(()=>{
+                let searchTerms = e.target.value
+                this.fetchMovies(searchTerms)
+            }, 1000)
+        }
+        this.debounce()
 
     }
     
@@ -50,6 +64,10 @@ class Searchpage extends React.Component {
 
     nominateMovie=()=>{
 
+    }
+
+    closeMovieInfo=()=>{
+        
     }
 
 

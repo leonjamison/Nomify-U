@@ -1,8 +1,9 @@
 import React from 'react'
+import Icon from '../Icon'
 
 const SearchForm = (props) => {
 
-    let {handleChange, fetchMovies} = props
+    let {handleChange} = props
 
     return(
         
@@ -16,11 +17,8 @@ const SearchForm = (props) => {
                             placeholder='Enter name of movie here...' 
                             onChange={handleChange} 
                             />
+                           
                         </div>
-                        <button className="btn waves-effect floating blue-grey darken-3" type="submit" name="action" onClick={fetchMovies}>Search
-                         <i className="material-icons right"></i>
-                        </button>
-                        
                     </form>
                 </section>
            </div>
