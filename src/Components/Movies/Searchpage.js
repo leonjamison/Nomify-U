@@ -20,7 +20,8 @@ class Searchpage extends React.Component {
         currentMovie: null,
         nominations: [],
         searchTerms: '',
-        message: ''
+        message: '',
+        isDisabled: false
        
         
     }
@@ -53,22 +54,46 @@ class Searchpage extends React.Component {
     }
     
     //TEST viewMovieDetails Function
-    viewMovieDetails=(movieId)=>{
-        fetch(`${apiUrl}&i=${movieId}`)
+    viewMovieDetails=(movieID)=>{
+      console.log(movieID)
+        fetch(`${apiUrl}&i=${movieID}`)
         .then(resp => resp.json())
         .then(details => this.setState({currentMovie: details}))
-        const filteredMovie = this.state.movies.filter(movie => movie.imdbID === movieId)
+        const filteredMovie = this.state.movies.filter(movie => movie.imdbID === movieID)
         const newCurrentMovie = filteredMovie.length > 0 ? filteredMovie[0] : null
         this.setState({currentMovie: newCurrentMovie }) 
     }
 
     nominateMovie=()=>{
-
+      let newNomination = this.state.currentMovie
+      let currentNominations = this.state.nominations
+        // set conditional > then 3 because on 4th click, it'll alert and add in that 5th object to movie array
+        if(currentNominations.length === 5 ){
+        this.setState({nominations: [...this.state.nominations, newNomination]})
+        // render banner here
+         alert('YOU HAVE SELECTED 5 NOMINATIONS')
+        // console.log(this.state.nominations)
+        }
+    
+      // console.log('movie just nominated:', this.state.nominations)
+       if(currentNominations.includes(newNomination)){
+        console.log('Already Nominated!')
+        }else{ this.setState({nominations: [...this.state.nominations, newNomination]})
+        // console.log('Nomination Recieved:', this.state.nominations)
+        }
+        // console.log("heres your nominations:", this.state.nominations)
+      // console.log('id:', imdbID, 'nomination:', newNomination)
+     
+      // this.refs.btn.setAttribute('disabled', 'disabled')
+      
     }
 
     closeMovieInfo=()=>{
-        
+        this.setState({currentMovie: null})
     }
+
+
+    
 
 
     
@@ -81,7 +106,7 @@ class Searchpage extends React.Component {
                 <Nav/>
 
                 {this.state.currentMovie === null ?  <div><Searchform handleChange={this.handleSearchChange} fetchMovies={this.fetchMovies}/> <Movielist movieDetails={this.viewMovieDetails} movies={this.state.movies} /> </div> :
-                 <Moviedetails nominateMovie={this.nominationMovie} details={this.state.movieDetails} currentMovie={this.state.currentMovie} closeMovieInfo={this.closeMovieInfo}/> 
+                 <Moviedetails nominateMovie={this.nominateMovie} currentMovie={this.state.currentMovie} closeMovieInfo={this.closeMovieInfo}/> 
                 }  
 
             </div>

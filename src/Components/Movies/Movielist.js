@@ -15,8 +15,8 @@ const Movielist=(props)=>{
                             <Moviecard 
                                key={movie.imdbID} 
                                image={movie.Poster}
-                               viewMovieDetails={props.movieDetails}
-                               movieId={movie.imdbID}
+                               movieDetails={props.movieDetails}
+                               movieID={movie.imdbID}
                             //    title={movie.title}
                             //    overview={movie.overview}
                             //    date={movie.release_date}
