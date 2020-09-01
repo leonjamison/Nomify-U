@@ -6,24 +6,17 @@ import Searchform from './Searchform'
 import Movielist from './Movielist'
 import Moviedetails from './Moviedetails'
 import debounce from 'lodash/debounce'
-// import throttle from "lodash/throttle"
-
+// import Nominations from './Nominations'
 
 const api_Key = process.env.REACT_APP_API 
 const apiUrl = `http://www.omdbapi.com/?apikey=${api_Key}`
-
-
 
 class Searchpage extends React.Component {
     state={
         movies: [],
         currentMovie: null,
         nominations: [],
-        searchTerms: '',
-        message: '',
-        isDisabled: false
-       
-        
+        searchTerms: ''
     }
 
     // Fetch movies from api upon user search query
@@ -53,9 +46,9 @@ class Searchpage extends React.Component {
 
     }
     
-    //TEST viewMovieDetails Function
+    //viewMovieDetails once a movie is selected from search
     viewMovieDetails=(movieID)=>{
-      console.log(movieID)
+      // console.log(movieID)
         fetch(`${apiUrl}&i=${movieID}`)
         .then(resp => resp.json())
         .then(details => this.setState({currentMovie: details}))
@@ -64,6 +57,7 @@ class Searchpage extends React.Component {
         this.setState({currentMovie: newCurrentMovie }) 
     }
 
+    // onclick for when Nominate button is click
     nominateMovie=()=>{
       let newNomination = this.state.currentMovie
       let currentNominations = this.state.nominations
@@ -71,32 +65,25 @@ class Searchpage extends React.Component {
         if(currentNominations.length === 5 ){
         this.setState({nominations: [...this.state.nominations, newNomination]})
         // render banner here
-         alert('YOU HAVE SELECTED 5 NOMINATIONS')
-        // console.log(this.state.nominations)
+        console.log('BANNER SHOWS HERE')
         }
-    
       // console.log('movie just nominated:', this.state.nominations)
-       if(currentNominations.includes(newNomination)){
-        console.log('Already Nominated!')
+       else if(currentNominations.includes(newNomination)){
+        //  buttons should be disabled after nominated
+        console.log ('Already Nominated! Make another selection.')
         }else{ this.setState({nominations: [...this.state.nominations, newNomination]})
-        // console.log('Nomination Recieved:', this.state.nominations)
+        console.log('Nomination Recieved:', this.state.nominations)
         }
-        // console.log("heres your nominations:", this.state.nominations)
-      // console.log('id:', imdbID, 'nomination:', newNomination)
      
       // this.refs.btn.setAttribute('disabled', 'disabled')
-      
     }
 
+    
     closeMovieInfo=()=>{
         this.setState({currentMovie: null})
     }
 
 
-    
-
-
-    
     render(){
      //  console.log(this.state.movies)
        return( 
@@ -104,10 +91,9 @@ class Searchpage extends React.Component {
             <div> 
                 <Global styles={GlobalCSS} />
                 <Nav/>
-
                 {this.state.currentMovie === null ?  <div><Searchform handleChange={this.handleSearchChange} fetchMovies={this.fetchMovies}/> <Movielist movieDetails={this.viewMovieDetails} movies={this.state.movies} /> </div> :
                  <Moviedetails nominateMovie={this.nominateMovie} currentMovie={this.state.currentMovie} closeMovieInfo={this.closeMovieInfo}/> 
-                }  
+                }
 
             </div>
 
@@ -237,9 +223,6 @@ const GlobalCSS = css`
   top: 5%;
   left: 0%;
 }
-
-
-
 
 
 

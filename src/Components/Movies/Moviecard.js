@@ -16,9 +16,6 @@ const Moviecard = (props) => {
                     }
                     </div>
                 </div>
-                    {/* <div className='card-content'>
-                   
-                    </div> */}
             </div>
             
     
