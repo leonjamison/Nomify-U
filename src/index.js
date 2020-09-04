@@ -6,6 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import {BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Searchpage from './Components/Movies/Searchpage'
+import Nominations from './Components/Movies/Nominations';
 
 ReactDOM.render(
   <Router>
@@ -13,6 +14,7 @@ ReactDOM.render(
       <Redirect exact from='/' to='/nomify-u'/>
       <Route exact path='/nomify-u' component={App}></Route>
       <Route exact path='/Search' component={Searchpage}></Route>
+      <Route exact path ='/Nominations' component={Nominations}></Route>
     </Switch>
   </Router>,
   document.getElementById('root')

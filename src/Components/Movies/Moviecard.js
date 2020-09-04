@@ -3,7 +3,7 @@ import React from 'react'
 
 
 const Moviecard = (props) => {
-   
+    // console.log('moviecardprops:', props)
     return(
             <div className='col s12 m6 l3' style={{paddingBottom: '20px'}}>
                 <div className='card'>

@@ -50,7 +50,7 @@
     
      <ul>
        <li>
-          <img style={{paddingTop: "40px", paddingBottom: '10px', paddingLeft: '10px'}} alt='' height="140" src={nomifyuchair2} />
+          <img style={{paddingTop: "20px", paddingBottom: '10px', paddingLeft: '10px'}} alt='' height="115" src={nomifyuchair2} />
        </li>
        <li>
          <a href='/nomify-u'> <Icon type='home'/>Home</a>

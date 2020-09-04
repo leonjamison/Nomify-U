@@ -6,17 +6,20 @@ import Searchform from './Searchform'
 import Movielist from './Movielist'
 import Moviedetails from './Moviedetails'
 import debounce from 'lodash/debounce'
+
 // import Nominations from './Nominations'
 
 const api_Key = process.env.REACT_APP_API 
 const apiUrl = `http://www.omdbapi.com/?apikey=${api_Key}`
+let rails_api = `http://localhost:3001/nominations`
 
 class Searchpage extends React.Component {
     state={
         movies: [],
         currentMovie: null,
         nominations: [],
-        searchTerms: ''
+        searchTerms: '',
+        disabled: false
     }
 
     // Fetch movies from api upon user search query
@@ -57,27 +60,44 @@ class Searchpage extends React.Component {
         this.setState({currentMovie: newCurrentMovie }) 
     }
 
-    // onclick for when Nominate button is click
+    // onclick for when Nominate button is clicked
     nominateMovie=()=>{
       let newNomination = this.state.currentMovie
       let currentNominations = this.state.nominations
-        // set conditional > then 3 because on 4th click, it'll alert and add in that 5th object to movie array
+      this.setState({disabled: true})
+
         if(currentNominations.length === 5 ){
-        this.setState({nominations: [...this.state.nominations, newNomination]})
         // render banner here
-        console.log('BANNER SHOWS HERE')
+        alert('You Have Selected 5 Nominations! Thank You')
         }
       // console.log('movie just nominated:', this.state.nominations)
        else if(currentNominations.includes(newNomination)){
         //  buttons should be disabled after nominated
-        console.log ('Already Nominated! Make another selection.')
-        }else{ this.setState({nominations: [...this.state.nominations, newNomination]})
-        console.log('Nomination Recieved:', this.state.nominations)
-        }
-     
-      // this.refs.btn.setAttribute('disabled', 'disabled')
-    }
-
+          console.log ('Already Nominated! Make another selection.')
+        }else{
+            this.setState({nominations: [...this.state.nominations, newNomination]})
+            console.log('all nominations n state:', this.state.nominations)
+            let post = { user_id: 1, 
+              Title: newNomination.Title, 
+              Poster: newNomination.Poster, 
+              Year: newNomination.Year, 
+              api_movieKey: newNomination.imdbID}
+              
+            fetch( rails_api , {
+              method: 'POST',
+              headers: 
+              {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'
+              },
+              body: JSON.stringify(
+                post
+              )
+          })
+          .then(r => r.json())
+          .then(resObj => console.log(resObj))
+        } 
+  }
     
     closeMovieInfo=()=>{
         this.setState({currentMovie: null})
@@ -85,13 +105,13 @@ class Searchpage extends React.Component {
 
 
     render(){
-     //  console.log(this.state.movies)
+      
        return( 
 
             <div> 
                 <Global styles={GlobalCSS} />
                 <Nav/>
-                {this.state.currentMovie === null ?  <div><Searchform handleChange={this.handleSearchChange} fetchMovies={this.fetchMovies}/> <Movielist movieDetails={this.viewMovieDetails} movies={this.state.movies} /> </div> :
+                {this.state.currentMovie === null ?  <div><Searchform handleChange={this.handleSearchChange} fetchMovies={this.fetchMovies}/> <Movielist movieDetails={this.viewMovieDetails} movies={this.state.movies} nominatedMovies={this.state.nominations}/> </div> :
                  <Moviedetails nominateMovie={this.nominateMovie} currentMovie={this.state.currentMovie} closeMovieInfo={this.closeMovieInfo}/> 
                 }
 

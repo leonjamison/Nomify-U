@@ -4,6 +4,9 @@ import { css, jsx } from '@emotion/core'
 import NomifyBG from '../img/NomifyBG.gif'
 import Icon from './Icon'
 import nomifyuchair2 from '../img/nomifyuchair2.png'
+import ReactPlayer from 'react-player'
+
+const url = `https://www.youtube.com/watch?v=4JiuenCj4vo`
 
 
 
@@ -11,7 +14,20 @@ const Homepage=()=>(
 
       <div css={homepageCSS}>
         <div className='synopsis'>
-            <img src={nomifyuchair2} alt=''/>
+          <div className='player-wrapper'>
+            <ReactPlayer
+            className='react-player'
+            url={url}
+            volume={1}
+            muted={true}
+            playing= {true}
+            controls={true}
+            width='100%'
+            height='380%'
+            loop={true} 
+            />
+          </div>
+          <img src={nomifyuchair2} alt=''/>
             <p> 
                 A single page application allowing a user to search movies and nominate 
                 their top 5 films for The Shoppies Entrepreneur Movie Awards. 
@@ -34,14 +50,14 @@ const homepageCSS = css`
   top: 0;
 
   .synopsis {
-    padding-top: 80px;
-    padding-left: 80px;
+    padding-top: 60px;
+    padding-left: 90px;
     max-width: 600px;
     font-weight: bold;
     color: white;
 
     img {
-      width: 40%;
+      width: 30%;
     }
     .Icon {
         margin-right: 10.5px;
@@ -56,7 +72,7 @@ const homepageCSS = css`
      
     .react-player {
       position: absolute;
-      top: 0;
+      top: 130%;
       left: 115%;
     }
 

@@ -3,7 +3,7 @@ import Moviecard from './Moviecard'
 
 
 const Movielist=(props)=>{
-    console.log('movielist props',props)
+    // console.log('movielist props:',props)
 
         return(
             <div className='container'>
@@ -17,9 +17,8 @@ const Movielist=(props)=>{
                                image={movie.Poster}
                                movieDetails={props.movieDetails}
                                movieID={movie.imdbID}
-                            //    title={movie.title}
-                            //    overview={movie.overview}
-                            //    date={movie.release_date}
+                               nominatedMovies={props.nominatedMovies}
+                            
                         
                             />)
                             })
