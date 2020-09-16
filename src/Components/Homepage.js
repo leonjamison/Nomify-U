@@ -1,12 +1,13 @@
 import React from 'react'
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core'
-import NomifyBG from '../img/NomifyBG.gif'
-import Icon from './Icon'
 import nomifyuchair2 from '../img/nomifyuchair2.png'
 import ReactPlayer from 'react-player'
+import Icon from './Icon'
+import Background1 from '../img/Background1.jpg'
 
-const url = `https://www.youtube.com/watch?v=4JiuenCj4vo`
+const url = `https://www.youtube.com/watch?v=ctbI3RftTNk`
+
 
 
 
@@ -23,18 +24,20 @@ const Homepage=()=>(
             playing= {true}
             controls={true}
             width='100%'
-            height='380%'
+            height='390%'
             loop={true} 
             />
           </div>
           <img src={nomifyuchair2} alt=''/>
             <p> 
-                A single page application allowing a user to search movies and nominate 
-                their top 5 films for The Shoppies Entrepreneur Movie Awards. 
+                Recognize your favorite film makers by nominating 
+                your Top 5 films for The Shoppies Entrepreneur Movie Awards.
+                Start by clicking <Icon type='search'/> to search for your favorite films. 
+                Here at NOMIFY-U, your voice counts!
             </p>
-            <span> 
+            {/* <span> 
                 By: Leon Jamison - Future Shopify Employee 
-            </span>
+            </span> */}
         </div>
      </div> 
 
@@ -42,7 +45,7 @@ const Homepage=()=>(
 
 const homepageCSS = css`
   position: relative;
-  background-image: url('${NomifyBG}');
+  background-image: url('${Background1}');
   background-repeat: no-repeat;
   background-size: cover;
   width: 100%;
@@ -57,7 +60,7 @@ const homepageCSS = css`
     color: white;
 
     img {
-      width: 30%;
+      width: 40%;
     }
     .Icon {
         margin-right: 10.5px;

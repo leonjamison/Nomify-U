@@ -1,9 +1,8 @@
 import React from 'react'
 import Navigationbar from '../Nav'
-import Movielist from './Movielist'
-import searchpage from '../../img/searchpage.jpg'
 import { Global, css} from '@emotion/core'
 import Icon from '../Icon'
+import MainPage from '../../img/MainPage.jpg'
 
 const backend_api = `http://localhost:3001/nominations`
 
@@ -18,8 +17,6 @@ class Nominations extends React.Component {
          fetch(backend_api)
          .then(resp => resp.json())
          .then(nominations => this.setState({nominations}))
-         let nomCount = this.state.nominations
-         if (nomCount.length === 5){console.log('YOU HAVE PICKED 5 NOMINATIONS!')}
       }
       
 
@@ -38,14 +35,14 @@ class Nominations extends React.Component {
    render(){
       let movies = this.state.nominations
 
-      console.log('nominations state:', this.state.nominations)
+      // console.log('nominations state:', this.state.nominations)
          return ( 
             <div> 
                <Global styles={GlobalCSS} />
-               <Navigationbar/>
+               <Navigationbar />
 
                <div style={{paddingTop: '100px'}} className='container'>
-                    <h5 style={{paddingLeft: '600px', paddingBottom: '30px'}}> <Icon type='film' /> Movie Nominations</h5>
+                    <h5 style={{paddingLeft: '460px', paddingBottom: '30px'}}> <Icon type='film' /> Movie Nominations <Icon type='film' /></h5>
                     <div className='row'>
                         <div className='col s12 '>
                             <div className='card-image'>
@@ -93,7 +90,7 @@ const GlobalCSS = css`
     width: 100%;
   }
   body {
-    background-image: url('${searchpage}');
+    background-image: url('${MainPage}');
     color: white;
   }
   a {

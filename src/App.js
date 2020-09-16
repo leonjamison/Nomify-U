@@ -1,4 +1,4 @@
-import { React, Component } from 'react'
+import  React from 'react'
 /** @jsx jsx */
 import { css,jsx, Global } from '@emotion/core'
 import Homepage from './Components/Homepage'
@@ -6,7 +6,7 @@ import Nav from './Components/Nav'
 import Footer from './Components/Footer'
 
 
-class App extends Component {
+class App extends React.Component {
 
 
   render() {

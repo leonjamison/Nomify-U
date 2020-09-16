@@ -7,7 +7,7 @@
  import nomifyuchair2 from '../img/nomifyuchair2.png'
 
  
- const Navigationbar = forwardRef((props, ref) => {
+ const Navigationbar = forwardRef((props,ref) => {
    const [scrolled, setScrolled] = useState(false)
 
  

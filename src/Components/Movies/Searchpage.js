@@ -1,13 +1,12 @@
 import React from 'react'
 import Nav from '../Nav'
 import { Global, css} from '@emotion/core'
-import searchpage from '../../img/searchpage.jpg'
 import Searchform from './Searchform'
 import Movielist from './Movielist'
 import Moviedetails from './Moviedetails'
 import debounce from 'lodash/debounce'
+import MainPage from '../../img/MainPage.jpg'
 
-// import Nominations from './Nominations'
 
 const api_Key = process.env.REACT_APP_API 
 const apiUrl = `http://www.omdbapi.com/?apikey=${api_Key}`
@@ -19,7 +18,8 @@ class Searchpage extends React.Component {
         currentMovie: null,
         nominations: [],
         searchTerms: '',
-        disabled: false
+        message: ''
+      
     }
 
     // Fetch movies from api upon user search query
@@ -27,7 +27,7 @@ class Searchpage extends React.Component {
 
         fetch(`${apiUrl}&s=${searchTerms}&type=movie`)
         .then(resp => resp.json())
-        .then(movies => this.setState({movies: [...movies.Search], message: ''}))
+        .then(movies => this.setState({movies: [...movies.Search]}))
         .catch((error)=>{
             if ((error)){
                 this.setState({message: error})
@@ -37,8 +37,6 @@ class Searchpage extends React.Component {
 
     handleSearchChange=(e)=>{
         e.persist()
-        // let searchTerms = e.target.value
-        // this.setState({searchTerms, loading: true })
         if(!this.debounce){
             this.debounce = debounce(()=>{
                 let searchTerms = e.target.value
@@ -60,28 +58,24 @@ class Searchpage extends React.Component {
         this.setState({currentMovie: newCurrentMovie }) 
     }
 
-    // onclick for when Nominate button is clicked
+    // onclick fct for when Nominate button is clicked
     nominateMovie=()=>{
       let newNomination = this.state.currentMovie
       let currentNominations = this.state.nominations
-      this.setState({disabled: true})
 
-        if(currentNominations.length === 5 ){
-        // render banner here
-        alert('You Have Selected 5 Nominations! Thank You')
-        }
-      // console.log('movie just nominated:', this.state.nominations)
-       else if(currentNominations.includes(newNomination)){
-        //  buttons should be disabled after nominated
-          console.log ('Already Nominated! Make another selection.')
+        if(currentNominations.length >= 5 ){
+          alert('🎉Thank You For Nominating 5 Movies! Please See Nominations to View or Change Your Nominations!🎉')
+        }else if(currentNominations.includes(newNomination)){
+          alert('Movie Already Nominated, Please Make Another Selection!')
         }else{
             this.setState({nominations: [...this.state.nominations, newNomination]})
-            console.log('all nominations n state:', this.state.nominations)
-            let post = { user_id: 1, 
+            let post = { 
+              user_id: 1, 
               Title: newNomination.Title, 
               Poster: newNomination.Poster, 
               Year: newNomination.Year, 
-              api_movieKey: newNomination.imdbID}
+              api_movieKey: newNomination.imdbID
+            }
               
             fetch( rails_api , {
               method: 'POST',
@@ -94,13 +88,21 @@ class Searchpage extends React.Component {
                 post
               )
           })
-          .then(r => r.json())
-          .then(resObj => console.log(resObj))
-        } 
+          .then(resp => {
+            if(resp.status === 406){
+              resp.json()
+              .then(resp => {alert(resp.errors)})
+            }else{
+              resp.json()
+              .then(resp => {alert('Success, Movie has been nominated!')})
+            }
+          })
+        }
   }
     
-    closeMovieInfo=()=>{
+    closeMovieInfo=(e)=>{
         this.setState({currentMovie: null})
+        this.handleSearchChange(e)
     }
 
 
@@ -135,7 +137,7 @@ const GlobalCSS = css`
     width: 100%;
   }
   body {
-    background-image: url('${searchpage}');
+    background-image: url('${MainPage}');
     color: white;
   }
   a {
