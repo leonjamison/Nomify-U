@@ -65,8 +65,6 @@ class Searchpage extends React.Component {
 
         if(currentNominations.length >= 5 ){
           alert('🎉Thank You For Nominating 5 Movies! Please See Nominations to View or Change Your Nominations!🎉')
-        }else if(currentNominations.includes(newNomination)){
-          alert('Movie Already Nominated, Please Make Another Selection!')
         }else{
             this.setState({nominations: [...this.state.nominations, newNomination]})
             let post = { 
